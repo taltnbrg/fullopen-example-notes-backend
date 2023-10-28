@@ -3,6 +3,7 @@ const cors = require('cors')
 const app = express()
 
 app.use(express.json())
+app.use(express.static('dist'))
 app.use(cors())
 
 let notes = [
@@ -24,7 +25,6 @@ let notes = [
 ]
 
 app.get('/', (request, response) => {
-  console.log(request.query)
   let html = ''
   if( request.query.test === 'show' ) {
     html = '<p>Another test</p>'
@@ -71,6 +71,13 @@ app.post('/api/notes', (request, response) => {
   notes = notes.concat(note)
 
   response.json(note)
+})
+
+app.put( '/api/notes/:id', (request, response) => {
+  const changedNote = request.body
+  notes = notes.concat(changedNote)
+
+  response.json(changedNote)
 })
 
 app.delete('/api/notes/:id', (request, response) => {
